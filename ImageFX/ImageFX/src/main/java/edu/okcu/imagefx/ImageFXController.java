@@ -40,12 +40,14 @@ public class ImageFXController {
     }
 
     String [] filterList = {"Gray Scale", "Blur", "Mirror", "Sepia Tone", "Game Boy"};
-
+    
+    // in the initialize method, we generate the options for the combo box.
     public void initialize() {
         ObservableList<String> filters = FXCollections.observableArrayList(filterList);
         filterComboBox.setItems(filters);
     }
 
+    // this method is used when the a selection is made in the combo box. It dictates what filter is applied to the image.
     public void onComboBoxSelection(javafx.event.ActionEvent actionEvent) throws IOException {
         if (filterComboBox.getValue().equals("Gray Scale")) {
             imgNewPicture.setImage(GrayScaleFilter.apply(selectedFile));
