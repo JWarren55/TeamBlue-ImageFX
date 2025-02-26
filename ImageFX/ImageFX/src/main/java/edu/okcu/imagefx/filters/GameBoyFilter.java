@@ -8,25 +8,34 @@ import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
-
+/*
+    This filter changes the image to use 4 shades of green to look like the original gameboy colors
+    All pixels are are catogrised in 4 groups then assigned a new value of green
+*/
 public class GameBoyFilter implements IFilter {
     public static Image apply(File file) throws IOException {
         BufferedImage img = ImageIO.read(file);
 
+        //Preform calculations on all pixels
         for (int y = 0; y < img.getHeight(); y++) {
             for (int x = 0; x < img.getWidth(); x++) {
                 int pixel = img.getRGB(x, y);
                 Color color = new Color(pixel);
 
+                //gat value of pixel componets 
                 int alpha = color.getAlpha();
                 int red = color.getRed();
                 int green = color.getGreen();
                 int blue = color.getBlue();
                 int newPixel;
 
-                // Calculation for GrayScale
+                // Find britness for pixel
                 var grayScale = (red + blue + green) / 3;
+                
+                //sort pixel in 4 catogory of britness
                 double brightness = grayScale/ 63.75;
+                
+                //gives each pixel 1 or 4 green according to brytness
                 if(brightness < 1) {
                     newPixel = (alpha<<24) | (15<<16) | (56<<8) | 15;
                 } else if(brightness < 2) {
@@ -37,10 +46,7 @@ public class GameBoyFilter implements IFilter {
                     newPixel = (alpha<<24) | (155<<16) | (188<<8) | 15;
                 }
 
-                // Create an Integer for the new values
-                // int newPixel = (alpha<<24) | (newColor<<16) | (newColor<<8) | newColor;
-
-
+                
                 img.setRGB(x, y, newPixel);
             }
         }
