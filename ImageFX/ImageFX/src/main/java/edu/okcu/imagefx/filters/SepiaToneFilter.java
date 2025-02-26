@@ -10,11 +10,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class SepiaToneFilter {
+  //Get file from file upload method
     public static Image apply(File file) throws IOException {
         BufferedImage img = ImageIO.read(file);
-
+    //Loop through each pixel width and height
         for (int y = 0; y < img.getHeight(); y++) {
             for (int x = 0; x < img.getWidth(); x++) {
+                //get RBG values
                 int pixel = img.getRGB(x, y);
                 Color color = new Color(pixel);
 
@@ -23,7 +25,7 @@ public class SepiaToneFilter {
                 int green = color.getGreen();
                 int blue = color.getBlue();
                 
-                // Create an Integer for the new values
+                // Create an integer for the new values and multiply by values to create Sepia tone for each pixel
                 int newRed = Math.min(255, (int) ((red * 0.393) + (green * 0.769) + (blue * 0.189)));
                 int newGreen = Math.min(255, (int) ((red * 0.349) + (green * 0.686) + (blue * 0.168)));
                 int newBlue = Math.min(255, (int) ((red * 0.272) + (green * 0.534) + (blue * 0.131)));
